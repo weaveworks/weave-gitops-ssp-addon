@@ -1,0 +1,33 @@
+{
+  "name": "@murillodigital/weavegitops-ssp-addon",
+  "version": "0.0.5",
+  "description": "WeaveGitOps Core Addon for AWS SSP CDK Platform",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf dist && tsc",
+    "test": "jest"
+  },
+  "files": [
+    "/dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/murillodigital/weavegitops-ssp-addon.git"
+  },
+  "author": "Leonardo Murillo <leonardo@weave.works>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/murillodigital/weavegitops-ssp-addon/issues"
+  },
+  "homepage": "https://github.com/murillodigital/weavegitops-ssp-addon#readme",
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@shapirov/cdk-eks-blueprint": "0.10.3",
+    "@types/async": "3.2.7",
+    "aws-sdk": "2.939.0"
+  }
+}

@@ -1,0 +1,8 @@
+---
+applications:
+  - applicationName: "weaveworks-dev"
+    gitRepository: "ssh://git@github.com/stefanprodan/podinfo"
+    path: "./tenants/"
+    privateKey: "<Base64 contents of SSH private key file>"
+    knownHosts: "<Base64 contents of known hosts file>"
+    branch: "main"
