@@ -26,7 +26,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@shapirov/cdk-eks-blueprint": "0.10.3",
+    "@shapirov/cdk-eks-blueprint": "0.10.4",
     "@types/async": "3.2.7",
     "aws-sdk": "2.939.0"
   }

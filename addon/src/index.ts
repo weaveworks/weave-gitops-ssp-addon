@@ -39,12 +39,14 @@ export class WeaveGitOpsAddOn implements ClusterAddOn, ClusterPostDeploy {
 
     readonly namespace: string;
     readonly bootstrapRepository: BootstrapRepository;
+    readonly wegoHelmRepository: string;
     debugMode: boolean;
 
     constructor(bootstrapRepository: BootstrapRepository, namespace?: string, debugMode?: false) {
         this.namespace = namespace ?? "wego-system";
         this.bootstrapRepository = bootstrapRepository;
         this.debugMode = debugMode ?? false;
+        this.wegoHelmRepository = "https://weaveworks.github.io/weave-gitops-ssp-addon/helm/";
     }
 
     getSshKeyFromSecret = async (secretName: string, region: string): Promise<void> => {
@@ -76,7 +78,7 @@ export class WeaveGitOpsAddOn implements ClusterAddOn, ClusterPostDeploy {
         try {
             clusterInfo.cluster.addHelmChart("weave-gitops-core", {
                 chart: "wego-core",
-                repository: "https://murillodigital.github.io/wego-helm",
+                repository: this.wegoHelmRepository,
                 version: '0.0.1',
                 namespace: this.namespace,
             });
@@ -95,7 +97,7 @@ export class WeaveGitOpsAddOn implements ClusterAddOn, ClusterPostDeploy {
             }
             clusterInfo.cluster.addHelmChart("weave-gitops-application", {
                 chart: "wego-app",
-                repository: "https://murillodigital.github.io/wego-helm",
+                repository: this.wegoHelmRepository,
                 version: '0.0.1',
                 namespace: this.namespace,
                 values: {
