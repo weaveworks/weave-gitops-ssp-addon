@@ -1,21 +1,34 @@
-#!/usr/bin/env node
-import 'source-map-support/register';
 import * as cdk from '@aws-cdk/core';
-import { SspStack } from '../lib/ssp-stack';
-
+import * as ssp from '@shapirov/cdk-eks-blueprint';
+import * as wego from '@weaveworksoss/weavegitops-ssp-addon';
+import { TeamGreen, TeamBlue } from './teams';
 const app = new cdk.App();
-new SspStack(app, 'SspStack', {
-  /* If you don't specify 'env', this stack will be environment-agnostic.
-   * Account/Region-dependent features and context lookups will not work,
-   * but a single synthesized template can be deployed anywhere. */
 
-  /* Uncomment the next line to specialize this stack for the AWS Account
-   * and Region that are implied by the current CLI configuration. */
-  // env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+let bootstrapRepository = {
+    URL: "ssh://git@github.com/weaveworks/weave-gitops-ssp-addon",
+    branch: "main",
+    path: "./bootstrap",
+    secretName: "<ARN for AWS Secrets Manager Secret holding SSH Credentials",
+} as wego.BootstrapRepository;
 
-  /* Uncomment the next line if you know exactly what Account and Region you
-   * want to deploy the stack to. */
-  // env: { account: '123456789012', region: 'us-east-1' },
+const GitOps = new wego.WeaveGitOpsAddOn(
+    bootstrapRepository,
+    "wego-system",
+)
 
-  /* For more information, see https://docs.aws.amazon.com/cdk/latest/guide/environments.html */
-});
+const addOns: Array<ssp.ClusterAddOn> = [
+    GitOps,
+    new ssp.addons.NginxAddOn,
+    new ssp.addons.CalicoAddOn,
+    new ssp.addons.MetricsServerAddOn,
+    new ssp.addons.ClusterAutoScalerAddOn,
+    new ssp.addons.ContainerInsightsAddOn,
+    new ssp.addons.AwsLoadBalancerControllerAddOn()
+];
+
+const account = '<AWS ACCOUNT NUMBER>';
+const region = '<AWS REGION>';
+const props = { env: { account, region } };
+const scope = new cdk.Construct(app, '<ID for your CDK Application>');
+const teams = [ new TeamBlue(), new TeamGreen() ];
+new ssp.stacks.EksBlueprint(scope, { id: '<ID for this EKS Blueprint>', addOns, teams }, props);

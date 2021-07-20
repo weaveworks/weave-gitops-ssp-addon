@@ -35,7 +35,7 @@ export interface BootstrapRepository {
     knownHosts?: string;
 }
 
-export class WeaveGitOpsAddOn implements ClusterAddOn, ClusterPostDeploy {
+export class WeaveGitOpsAddOn implements ClusterAddOn {
 
     readonly namespace: string;
     readonly bootstrapRepository: BootstrapRepository;
@@ -49,7 +49,7 @@ export class WeaveGitOpsAddOn implements ClusterAddOn, ClusterPostDeploy {
         this.wegoHelmRepository = "https://weaveworks.github.io/weave-gitops-ssp-addon/helm/";
     }
 
-    getSshKeyFromSecret = async (secretName: string, region: string): Promise<void> => {
+    async getSshKeyFromSecret(secretName: string, region: string): Promise<void> {
         const client = new SecretsManager({ region: region });
         let secretObject: any = {};
         try {
@@ -74,20 +74,26 @@ export class WeaveGitOpsAddOn implements ClusterAddOn, ClusterPostDeploy {
         return Buffer.from(contents, 'binary').toString('base64');
     }
 
-    deploy(clusterInfo: ClusterInfo): void {
+    async deploy(clusterInfo: ClusterInfo): Promise<void> {
         try {
-            clusterInfo.cluster.addHelmChart("weave-gitops-core", {
+            const coreChart = clusterInfo.cluster.addHelmChart("weave-gitops-core", {
                 chart: "wego-core",
                 repository: this.wegoHelmRepository,
                 version: '0.0.1',
                 namespace: this.namespace,
             });
+            /*
+            TODO: The following call to a temporary implementation of the postDeploy step is there to maintain
+            bootstrapping functionality while the asynchronous implementation of the parent package gets solved.
+             */
+            const bootstrapChart = await this.configureAddOn(clusterInfo)
+            bootstrapChart.node.addDependency(coreChart);
         } catch (err) {
             console.error(`Unable to complete Weave GitOps AddOn Core deployment - aborting with error ${err}`);
         }
     }
 
-    async postDeploy(clusterInfo: ClusterInfo, teams: Team[]): Promise<void> {
+    async configureAddOn(clusterInfo: ClusterInfo): Promise<any> {
         try {
             if (this.bootstrapRepository.secretName) {
                 await this.getSshKeyFromSecret(this.bootstrapRepository.secretName, clusterInfo.cluster.stack.region);
@@ -95,7 +101,7 @@ export class WeaveGitOpsAddOn implements ClusterAddOn, ClusterPostDeploy {
             if (!this.bootstrapRepository.privateKey || !this.bootstrapRepository.knownHosts) {
                 throw "Required details for bootstrap repository access are missing, aborting";
             }
-            clusterInfo.cluster.addHelmChart("weave-gitops-application", {
+            return clusterInfo.cluster.addHelmChart("weave-gitops-application", {
                 chart: "wego-app",
                 repository: this.wegoHelmRepository,
                 version: '0.0.1',
