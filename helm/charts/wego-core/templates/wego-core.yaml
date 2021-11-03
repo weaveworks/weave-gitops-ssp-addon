@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: helm-controller
   namespace: {{ .Release.Namespace }}
 ---
@@ -15,7 +15,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: image-automation-controller
   namespace: {{ .Release.Namespace }}
 ---
@@ -25,7 +25,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: image-reflector-controller
   namespace: {{ .Release.Namespace }}
 ---
@@ -35,7 +35,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: kustomize-controller
   namespace: {{ .Release.Namespace }}
 ---
@@ -45,7 +45,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: notification-controller
   namespace: {{ .Release.Namespace }}
 ---
@@ -55,7 +55,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: source-controller
   namespace: {{ .Release.Namespace }}
 ---
@@ -65,7 +65,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: crd-controller-wego-system
 rules:
 - apiGroups:
@@ -101,6 +101,7 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - namespaces
   - secrets
   verbs:
   - get
@@ -145,7 +146,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: cluster-reconciler-wego-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -165,7 +166,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: crd-controller-wego-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -197,7 +198,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: notification-controller
   namespace: {{ .Release.Namespace }}
@@ -217,7 +218,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: source-controller
   namespace: {{ .Release.Namespace }}
@@ -237,7 +238,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: webhook-receiver
   namespace: {{ .Release.Namespace }}
@@ -257,7 +258,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: helm-controller
   namespace: {{ .Release.Namespace }}
@@ -286,7 +287,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/helm-controller:v0.10.0
+        image: ghcr.io/fluxcd/helm-controller:v0.12.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -294,11 +295,11 @@ spec:
             port: healthz
         name: manager
         ports:
+        - containerPort: 8080
+          name: http-prom
         - containerPort: 9440
           name: healthz
           protocol: TCP
-        - containerPort: 8080
-          name: http-prom
         readinessProbe:
           httpGet:
             path: /readyz
@@ -330,7 +331,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: image-automation-controller
   namespace: {{ .Release.Namespace }}
@@ -359,7 +360,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/image-automation-controller:v0.9.0
+        image: ghcr.io/fluxcd/image-automation-controller:v0.15.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -367,11 +368,11 @@ spec:
             port: healthz
         name: manager
         ports:
+        - containerPort: 8080
+          name: http-prom
         - containerPort: 9440
           name: healthz
           protocol: TCP
-        - containerPort: 8080
-          name: http-prom
         readinessProbe:
           httpGet:
             path: /readyz
@@ -405,7 +406,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: image-reflector-controller
   namespace: {{ .Release.Namespace }}
@@ -434,7 +435,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/image-reflector-controller:v0.9.1
+        image: ghcr.io/fluxcd/image-reflector-controller:v0.13.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -442,11 +443,11 @@ spec:
             port: healthz
         name: manager
         ports:
+        - containerPort: 8080
+          name: http-prom
         - containerPort: 9440
           name: healthz
           protocol: TCP
-        - containerPort: 8080
-          name: http-prom
         readinessProbe:
           httpGet:
             path: /readyz
@@ -484,7 +485,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: kustomize-controller
   namespace: {{ .Release.Namespace }}
@@ -513,7 +514,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/kustomize-controller:v0.12.0
+        image: ghcr.io/fluxcd/kustomize-controller:v0.16.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -521,11 +522,11 @@ spec:
             port: healthz
         name: manager
         ports:
+        - containerPort: 8080
+          name: http-prom
         - containerPort: 9440
           name: healthz
           protocol: TCP
-        - containerPort: 8080
-          name: http-prom
         readinessProbe:
           httpGet:
             path: /readyz
@@ -559,7 +560,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: notification-controller
   namespace: {{ .Release.Namespace }}
@@ -587,7 +588,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/notification-controller:v0.13.0
+        image: ghcr.io/fluxcd/notification-controller:v0.18.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -595,15 +596,15 @@ spec:
             port: healthz
         name: manager
         ports:
-        - containerPort: 9440
-          name: healthz
-          protocol: TCP
         - containerPort: 9090
           name: http
         - containerPort: 9292
           name: http-webhook
         - containerPort: 8080
           name: http-prom
+        - containerPort: 9440
+          name: healthz
+          protocol: TCP
         readinessProbe:
           httpGet:
             path: /readyz
@@ -635,7 +636,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
     control-plane: controller
   name: source-controller
   namespace: {{ .Release.Namespace }}
@@ -668,7 +669,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
-        image: ghcr.io/fluxcd/source-controller:v0.12.1
+        image: ghcr.io/fluxcd/source-controller:v0.16.1
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -719,7 +720,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: allow-egress
   namespace: {{ .Release.Namespace }}
 spec:
@@ -739,7 +740,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: allow-scraping
   namespace: {{ .Release.Namespace }}
 spec:
@@ -759,7 +760,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: wego-system
     app.kubernetes.io/part-of: flux
-    app.kubernetes.io/version: v0.13.2
+    app.kubernetes.io/version: v0.19.1
   name: allow-webhooks
   namespace: {{ .Release.Namespace }}
 spec:

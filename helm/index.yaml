@@ -3,7 +3,7 @@ entries:
   wego:
   - apiVersion: v2
     appVersion: 0.0.5
-    created: "2021-07-12T21:36:03.011167045Z"
+    created: "2021-11-03T18:23:11.094396554Z"
     description: Weave GitOps Core
     digest: 8173e6f38d2b945d865f3e63bd9f32a634d393c6c0771c03856cc630ea472499
     name: wego
@@ -13,7 +13,7 @@ entries:
     version: 0.0.4
   - apiVersion: v2
     appVersion: 0.0.5
-    created: "2021-07-12T21:36:03.00922892Z"
+    created: "2021-11-03T18:23:11.090873577Z"
     description: Weave GitOps Core
     digest: 92f151b6e1089185b416b4bb228d59b287a51e521e31c899a5af5c00e85496db
     name: wego
@@ -23,7 +23,7 @@ entries:
     version: 0.0.3
   - apiVersion: v2
     appVersion: 0.0.5
-    created: "2021-07-12T21:36:03.007393069Z"
+    created: "2021-11-03T18:23:11.089309573Z"
     description: Weave GitOps Core
     digest: 27c2b3eac17c36b1bfdd8ee851b611e15fa442d7d57fa5327f7e00e8b0b6d3d4
     name: wego
@@ -33,7 +33,7 @@ entries:
     version: 0.0.2
   - apiVersion: v2
     appVersion: 0.0.5
-    created: "2021-07-12T21:36:03.005544572Z"
+    created: "2021-11-03T18:23:11.088033615Z"
     description: Weave GitOps Core
     digest: dd7ef57f32de04b1eddcdc42eb3d8f76c1595c013fe2b243990b1d100deda910
     name: wego
@@ -43,8 +43,18 @@ entries:
     version: 0.0.1
   wego-app:
   - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2021-11-03T18:23:11.094827159Z"
+    description: Weave GitOps Application
+    digest: 2d4571bbca37ebd87a9ae3928c2802e2a60676cc3d099b730841f9036cdb1906
+    name: wego-app
+    type: application
+    urls:
+    - https://murillodigital.github.io/wego-helm/wego-app-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     appVersion: 0.0.5
-    created: "2021-07-12T21:36:03.011397164Z"
+    created: "2021-11-03T18:23:11.094618812Z"
     description: Weave GitOps Application
     digest: d19d84be2081f7086d77ade323f2eb9db47faf8e5bd2e2453934d927679739d2
     name: wego-app
@@ -54,8 +64,18 @@ entries:
     version: 0.0.1
   wego-core:
   - apiVersion: v2
+    appVersion: 0.4.0
+    created: "2021-11-03T18:23:11.097484604Z"
+    description: Weave GitOps Core
+    digest: 83bb94c219d9d56f585d2e6d6b9026b55f747ad9a8fdf4d8650e33beb5601124
+    name: wego-core
+    type: application
+    urls:
+    - https://murillodigital.github.io/wego-helm/wego-core-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     appVersion: 0.0.5
-    created: "2021-07-12T21:36:03.012693901Z"
+    created: "2021-11-03T18:23:11.096009188Z"
     description: Weave GitOps Core
     digest: 0ad14dee62bdc02943c0f3db435b1fc9e4820870e95883b5160767056b36cb9e
     name: wego-core
@@ -63,4 +83,4 @@ entries:
     urls:
     - https://murillodigital.github.io/wego-helm/wego-core-0.0.1.tgz
     version: 0.0.1
-generated: "2021-07-12T21:36:03.001880514Z"
+generated: "2021-11-03T18:23:11.086461311Z"
