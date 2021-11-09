@@ -1,5 +1,6 @@
-import { ClusterAddOn, ClusterInfo, ClusterPostDeploy, Team } from '@shapirov/cdk-eks-blueprint';
+import { ClusterAddOn, ClusterInfo, ClusterPostDeploy, Team } from '@aws-quickstart/ssp-amazon-eks';
 import { SecretsManager } from "aws-sdk";
+import { Construct } from '@aws-cdk/core';
 
 export interface BootstrapRepository {
     /**
@@ -74,23 +75,16 @@ export class WeaveGitOpsAddOn implements ClusterAddOn {
         return Buffer.from(contents, 'binary').toString('base64');
     }
 
-    async deploy(clusterInfo: ClusterInfo): Promise<void> {
-        try {
-            const coreChart = clusterInfo.cluster.addHelmChart("weave-gitops-core", {
-                chart: "wego-core",
-                repository: this.wegoHelmRepository,
-                version: '0.0.1',
-                namespace: this.namespace,
-            });
-            /*
-            TODO: The following call to a temporary implementation of the postDeploy step is there to maintain
-            bootstrapping functionality while the asynchronous implementation of the parent package gets solved.
-             */
-            const bootstrapChart = await this.configureAddOn(clusterInfo)
-            bootstrapChart.node.addDependency(coreChart);
-        } catch (err) {
-            console.error(`Unable to complete Weave GitOps AddOn Core deployment - aborting with error ${err}`);
-        }
+    async deploy(clusterInfo: ClusterInfo):  Promise<Construct> {
+        const coreChart = clusterInfo.cluster.addHelmChart("weave-gitops-core", {
+            chart: "wego-core",
+            repository: this.wegoHelmRepository,
+            version: '0.0.1',
+            namespace: this.namespace,
+        });
+        const bootstrapChart = await this.configureAddOn(clusterInfo)
+        bootstrapChart.node.addDependency(coreChart);
+        return coreChart;
     }
 
     async configureAddOn(clusterInfo: ClusterInfo): Promise<any> {

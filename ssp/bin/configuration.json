@@ -1,0 +1,24 @@
+{
+    "environments": [
+        {
+            "name": "development",
+            "path": "./bootstrap/dev",
+            "useSpot": true,
+            "region": "us-west-1",
+            "account": "450820360611",
+            "clusterConfiguration": {
+                "minSize": 1,
+                "maxSize": 10,
+                "desiredSize": 2,
+                "instanceTypes": [
+                    "t3.medium"
+                ]
+            }
+        }
+    ],
+    "bootstrapRepository": {
+        "url": "ssh://git@github.com/murillodigital/weave-gitops-ssp-addon",
+        "branch": "main",
+        "secret": "arn:aws:secretsmanager:us-west-1:450820360611:secret:bootstrap/secret1-F3MY6g"
+    }
+}

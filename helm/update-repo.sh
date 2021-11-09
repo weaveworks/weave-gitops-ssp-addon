@@ -1,2 +1,3 @@
 helm package charts/*
-helm repo index --url https://murillodigital.github.io/wego-helm/ .
+helm repo index --url https://weaveworks.github.io/weave-gitops-ssp-addon/helm/ .
+
